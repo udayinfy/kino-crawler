@@ -11,6 +11,7 @@ public class Initializer
     {
        InternetConnection a = new InternetConnection();
        a.Connect("http:\\www.wp.pl");
-       
+       //a.ReadPage();
+       System.out.println(a.ActualURL());
     }
 }

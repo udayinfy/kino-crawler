@@ -3,8 +3,12 @@
  * and open the template in the editor.
  */
 package com.mycompany.crawler;
-import java.net.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -12,12 +16,13 @@ import java.util.logging.Logger;
  * @author kacper
  */
 public class InternetConnection implements DBConnectionInterface{
-       String newLine;
-       URL url = null;
-       URLConnection urlConn = null;
-       InputStreamReader  inStream = null;
-       BufferedReader buffor = null;
+    
+       URL url ;
+       URLConnection urlConn;
 
+
+       
+       
     public boolean isConnectionPossible() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -26,7 +31,7 @@ public class InternetConnection implements DBConnectionInterface{
         
         try {
             url = new URL(site);
-            urlConn = url.openConnection();
+            
             
         } catch (MalformedURLException ex) {
             Logger.getLogger(InternetConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -35,11 +40,23 @@ public class InternetConnection implements DBConnectionInterface{
             }
         
     }
+    public URL ActualURL(){
+        return url;
+    }
 
     public Object find() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    public void ReadPage() throws IOException{
+    public void ReadPage() {
+        String newLine;
+        InputStreamReader  inStream ;
+        BufferedReader buffor ;
+        try {
+            urlConn = url.openConnection();
+            inStream = new InputStreamReader(urlConn.getInputStream());
+        
+        buffor= new BufferedReader(inStream);
+
         while (true){
             newLine =buffor.readLine();  
             if (newLine !=null){
@@ -50,7 +67,9 @@ public class InternetConnection implements DBConnectionInterface{
             } 
 
             }
-    
+        } catch (IOException ex) {
+            Logger.getLogger(InternetConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
 }
 
     public String getActualPage() {
